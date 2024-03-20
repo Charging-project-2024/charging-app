@@ -3,8 +3,11 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+var admin = require('firebase-admin');
 
 var indexRouter = require("./routes/index");
+
+require('dotenv').config();
 
 var app = express();
 
@@ -34,6 +37,19 @@ app.use(function (err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render("error");
+});
+
+// setup firebase
+import(process.env.FIREBASE_SERVICE_ACCOUNT_PATH, { with: { type: 'json' } }).then(module => {
+  const { default: account }= module;
+
+  admin.initializeApp({
+    credential: admin.credential.cert(account)
+  });
+  
+  app.locals.firebaseAdmin = admin;
+}).catch(err => {
+  console.log(err.message);
 });
 
 module.exports = app;
