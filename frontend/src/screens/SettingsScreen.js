@@ -1,11 +1,13 @@
-import { View, Text } from "react-native";
 import React from "react";
+import { View, Text } from "react-native";
+import ChargeTimeSetting from "../components/ChargeTime";
+import SliderComponent from "../components/Slider";
 
 const SettingsScreen = () => {
   return (
-    <View>
-      <Text>Settings Screen</Text>
-      <Text>Settings Screen</Text>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <ChargeTimeSetting />
+      <SliderComponent />
     </View>
   );
 };
