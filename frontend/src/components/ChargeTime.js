@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, TextInput, Button, Text } from "react-native";
 
-const ChargeTimeSetting = () => {
-  const [chargeTime, setChargeTime] = useState(8);
-
+const ChargeTimeSetting = ({ chargeTime, setChargeTime }) => {
   const handleChange = (value) => {
     const newValue = Math.max(0, Math.min(100, value));
     setChargeTime(newValue);
