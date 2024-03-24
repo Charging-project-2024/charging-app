@@ -1,32 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TextInput } from "react-native";
 import Slider from "@react-native-community/slider";
 
-const SliderComponent = () => {
-  const [value, setValue] = useState(0);
-  const [inputValue, setInputValue] = useState("0");
+const SliderComponent = ({ maxPrice, setMaxPrice }) => {
+  const [inputValue, setInputValue] = useState(maxPrice.toString());
   const [isError, setIsError] = useState(false);
   const max = 100;
   const min = 0;
 
+  useEffect(() => {
+    setInputValue(maxPrice.toString());
+  }, [maxPrice]);
+
   const handleTextInputChange = (text) => {
     setInputValue(text);
     const newValue = parseFloat(text);
-    if (!isNaN(newValue)) {
-      if (newValue >= min && newValue <= max) {
-        setValue(newValue);
-        setIsError(false);
-      } else {
-        setIsError(true);
-      }
+    if (!isNaN(newValue) && newValue >= min && newValue <= max) {
+      setMaxPrice(newValue);
+      setIsError(false);
+    } else {
+      setIsError(true);
     }
   };
 
   const handleSliderChange = (newValue) => {
-    const roundedValue = parseFloat(newValue.toFixed(2));
-    setValue(roundedValue);
-    setInputValue(roundedValue.toString());
-    setIsError(false);
+    setMaxPrice(newValue);
   };
 
   return (
@@ -46,7 +44,7 @@ const SliderComponent = () => {
         minimumTrackTintColor="#007bff"
         maximumTrackTintColor="#000000"
         thumbTintColor="#007bff"
-        value={value}
+        value={maxPrice}
         onValueChange={handleSliderChange}
       />
     </View>
