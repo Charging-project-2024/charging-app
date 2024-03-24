@@ -34,4 +34,24 @@ router.post("/save-settings-firebase", async (req, res) => {
   }
 });
 
+router.get("/get-settings-firebase", async (req, res) => {
+  try {
+    const db = req.app.locals.firebaseAdmin.firestore();
+    const settingsDocRef = db.collection("Settings").doc("SettingsDoc");
+
+    const doc = await settingsDocRef.get();
+
+    if (!doc.exists) {
+      return res.status(404).json({ error: "No settings found" });
+    }
+
+    res.json({
+      settingsData: doc.data(),
+    });
+  } catch (error) {
+    console.error("Error retrieving from Firebase:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 module.exports = router;
